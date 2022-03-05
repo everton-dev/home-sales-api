@@ -1,7 +1,9 @@
 ﻿using Application.Configuration.Map;
 using Application.Handlers;
 using Application.Pipelines;
+using Domain.Interfaces.Cloud;
 using Domain.Interfaces.Repositories;
+using Infrastructure.Cloud.AWS;
 using Infrastructure.Repositories;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +22,15 @@ namespace CrossCutting
             services.AddScoped(typeof(IBrandRepository), typeof(BrandRepository));
             services.AddScoped(typeof(IProductRepository), typeof(ProductRepository));
             services.AddScoped(typeof(IRoomRepository), typeof(RoomRepository));
+        }
+
+        /// <summary>
+        /// Add cloud connectors injection.
+        /// </summary>
+        /// <param name="services"></param>
+        public static void AddCloudConnectors(this IServiceCollection services)
+        {
+            services.AddScoped(typeof(IFileStorageCloud<,>), typeof(FileStorageCloud));
         }
 
         /// <summary>

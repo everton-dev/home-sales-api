@@ -5,16 +5,16 @@ using System.Text.Json.Serialization;
 
 namespace Domain.Commands.Requests
 {
-    public class ProductSellCommand : ValidateCommand, IRequest<DefaultResponse<Models.Product>>
+    public class ProductSetImagesCommand : ValidateCommand, IRequest<DefaultResponse<Models.Product>>
     {
         public string Id { get; private set; }
-        public decimal SoldBy { get; private set; }
+        public ProductImageRequest[] Images { get; private set; }
 
         [JsonConstructor]
-        public ProductSellCommand(string id, decimal soldBy)
+        public ProductSetImagesCommand(string id, ProductImageRequest[] images)
         {
             Id = id;
-            SoldBy = soldBy;
+            Images = images;
         }
 
         public override async Task ValidateAsync()
@@ -24,8 +24,10 @@ namespace Domain.Commands.Requests
             else if (!GuidValidator.IsGuid(Id))
                 AddNotification("Id", "Id is not valid.");
 
-            if (SoldBy <= 0)
-                AddNotification("SoldBy", "SoldBy is required.");
+            if (Images == null)
+                AddNotification("Images", "Images is required.");
+            else if (Images.Length <= 0)
+                AddNotification("Images", "Images is empty.");
 
             await Task.CompletedTask;
         }

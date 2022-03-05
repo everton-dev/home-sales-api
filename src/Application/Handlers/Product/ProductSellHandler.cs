@@ -1,13 +1,12 @@
 ﻿using Domain.Commands.Requests;
 using Domain.Commands.Responses;
 using Domain.Interfaces.Repositories;
-using Domain.Models;
 using Domain.Notifications;
 using MediatR;
 
 namespace Application.Handlers
 {
-    public class ProductSellHandler : IRequestHandler<ProductSellCommand, DefaultResponse<Product>>
+    public class ProductSellHandler : IRequestHandler<ProductSellCommand, DefaultResponse<Domain.Models.Product>>
     {
         private readonly IMediator _mediator;
         private readonly IProductRepository _productRepository;
@@ -18,7 +17,7 @@ namespace Application.Handlers
             _productRepository = productRepository;
         }
 
-        public async Task<DefaultResponse<Product>> Handle(ProductSellCommand request, CancellationToken cancellationToken)
+        public async Task<DefaultResponse<Domain.Models.Product>> Handle(ProductSellCommand request, CancellationToken cancellationToken)
         {
             //Get product from database
             var product = await _productRepository.GetByIdAsync(request.Id);
