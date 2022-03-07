@@ -12,8 +12,10 @@ builder.Services.AddSwaggerGen();
 
 // Add services to the container.
 builder.Services.Configure<HomeSalesDatabaseSettings>(builder.Configuration.GetSection("HomeSalesDatabase"));
+builder.Services.Configure<AwsSettings>(builder.Configuration.GetSection("AWS"));
 
 builder.Services.AddRepositories();
+builder.Services.AddCloudConnectors();
 builder.Services.AddMediator();
 builder.Services.AddAutomapper();
 

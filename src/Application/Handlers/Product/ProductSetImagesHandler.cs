@@ -29,7 +29,7 @@ namespace Application.Handlers
             //AddImages in AWS S3
             foreach (var image in request.Images)
             {
-                var output = await _fileStorageCloud.AddAsync(new());
+                var output = await _fileStorageCloud.AddAsync(new("", "", ""));
                 await product.AddImageAsync(new(image.Name, image.Type, ""));
             }
 

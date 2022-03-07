@@ -3,6 +3,7 @@ using Application.Handlers;
 using Application.Pipelines;
 using Domain.Interfaces.Cloud;
 using Domain.Interfaces.Repositories;
+using Domain.Models.Cloud;
 using Infrastructure.Cloud.AWS;
 using Infrastructure.Repositories;
 using MediatR;
@@ -30,7 +31,7 @@ namespace CrossCutting
         /// <param name="services"></param>
         public static void AddCloudConnectors(this IServiceCollection services)
         {
-            services.AddScoped(typeof(IFileStorageCloud<,>), typeof(FileStorageCloud));
+            services.AddScoped(typeof(IFileStorageCloud<FileStorageInput, FileStorageOutput>), typeof(FileStorageCloud));
         }
 
         /// <summary>
