@@ -33,7 +33,7 @@ namespace Application.Handlers
                 return await DefaultResponse.OK.AddValidationAsync("Brand not found.");
 
             var product = new Product(
-                Guid.NewGuid().ToString(),
+                Guid.NewGuid().ToString().ToUpper(),
                 request.Description,
                 room,
                 brand,
