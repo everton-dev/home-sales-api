@@ -66,9 +66,34 @@ namespace Infrastructure.Cloud.AWS
             }
         }
 
-        public Task<ICollection<FileStorageOutput>> GetAllAsync(FileStorageInput file)
+        public async Task<ICollection<FileStorageOutput>> GetAllAsync(string folder)
         {
-            throw new NotImplementedException();
+            var result = new List<FileStorageOutput>();
+            var bucketRepository = $"{_bucketName}/{folder}".Replace("//", "/");
+            var urlBucket = _awsSettings.Value.S3UrlBucket;
+
+            ListObjectsRequest listRequest = new ListObjectsRequest
+            {
+                BucketName = bucketRepository,
+            };
+
+            ListObjectsResponse listResponse;
+            do
+            {
+                // Get a list of objects
+                listResponse = await _client.ListObjectsAsync(listRequest);
+                foreach (S3Object awsFile in listResponse.S3Objects)
+                {
+                    var urlFile = $"{urlBucket}/{folder}/{awsFile.Key}".Replace("//", "/");
+
+                    result.Add(new FileStorageOutput(awsFile.Key, bucketRepository, urlFile));
+                }
+
+                // Set the marker property
+                listRequest.Marker = listResponse.NextMarker;
+            } while (listResponse.IsTruncated);
+
+            return result;
         }
 
         public async Task<FileStorageOutput> GetAsync(FileStorageInput file)

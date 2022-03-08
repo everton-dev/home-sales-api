@@ -5,6 +5,6 @@
         Task<TOutputEntity> AddAsync(TInputEntity file);
         Task RemoveAsync(TInputEntity file);
         Task<TOutputEntity> GetAsync(TInputEntity file);
-        Task<ICollection<TOutputEntity>> GetAllAsync(TInputEntity file);
+        Task<ICollection<TOutputEntity>> GetAllAsync(string folder);
     }
 }

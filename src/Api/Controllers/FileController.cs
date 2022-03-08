@@ -28,5 +28,13 @@ namespace Api.Controllers
             var result = await _mediator.Send(request, CancellationToken.None);
             return await base.ValidationHandlerAsync(result);
         }
+
+        [HttpGet]
+        [Route("get-all")]
+        public async Task<IActionResult> GetAll(string folder)
+        {
+            var result = await _mediator.Send(new FileGetAllCommand(folder), CancellationToken.None);
+            return await base.ValidationHandlerAsync(result);
+        }
     }
 }

@@ -14,6 +14,8 @@ namespace Application.Handlers
         private readonly IProductRepository _productRepository;
         private readonly IFileStorageCloud<FileStorageInput, FileStorageOutput> _fileStorageCloud;
 
+        private const string BUCKET_FOLDER = "catalogo";
+
         public ProductSetImagesHandler(IMediator mediator, IProductRepository productRepository, IFileStorageCloud<FileStorageInput, FileStorageOutput> fileStorageCloud)
         {
             _mediator = mediator;
@@ -29,8 +31,8 @@ namespace Application.Handlers
             //AddImages in AWS S3
             foreach (var image in request.Images)
             {
-                var output = await _fileStorageCloud.AddAsync(new("", "", ""));
-                await product.AddImageAsync(new(image.Name, image.Type, ""));
+                var output = await _fileStorageCloud.AddAsync(new(image.Name, BUCKET_FOLDER, image.Base64));
+                await product.AddImageAsync(new(image.Name, image.Type, output.UrlFile));
             }
 
             //Update product in database
